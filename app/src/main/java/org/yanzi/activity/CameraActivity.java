@@ -2,6 +2,7 @@ package org.yanzi.activity;
 
 import org.yanzi.camera.CameraInterface;
 import org.yanzi.camera.CameraInterface.CamOpenOverCallback;
+import org.yanzi.camera.CropInfo;
 import org.yanzi.camera.preview.CameraSurfaceView;
 import org.yanzi.playcamera.R;
 import org.yanzi.util.DisplayUtil;
@@ -9,52 +10,55 @@ import org.yanzi.util.DisplayUtil;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
     private static final String TAG = "yanzi";
     CameraSurfaceView surfaceView = null;
     ImageButton shutterBtn;
+    Button button;
     float previewRate = -1f;
+    Point p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        initUI();
-        shutterBtn.setOnClickListener(new BtnListeners());
     }
 
 
     @Override
     protected void onResume() {
-        shutterBtn.post(openCamera);
+        Log.e("tag", "onResume");
+
+        initUI();
         initViewParams();
+        shutterBtn.post(openCamera);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
+        Log.e("tag", "onPause");
+      //  CameraInterface.getInstance().doStopCamera();
         super.onPause();
-        shutterBtn.post(closeCamera);
     }
+
 
     Runnable openCamera = new Runnable() {
         @Override
         public void run() {
-            CameraInterface.getInstance().doOpenCamera(CameraActivity.this);
-        }
-    };
-    Runnable closeCamera = new Runnable() {
-        @Override
-        public void run() {
-            CameraInterface.getInstance().doOpenCamera(null);
-            CameraInterface.getInstance().doStopCamera();
+            Log.e("CropInfo", button.getLeft() + "," + button.getTop() + "," + button.getWidth() + "," + button.getHeight());
+            CropInfo cropInfo = new CropInfo(button.getLeft(), button.getTop(), button.getWidth(), button.getHeight(), p.x, p.y);
+            CameraInterface.getInstance().doOpenCamera(cropInfo, CameraActivity.this);
         }
     };
 
@@ -68,11 +72,15 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     private void initUI() {
         surfaceView = (CameraSurfaceView) findViewById(R.id.camera_surfaceview);
         shutterBtn = (ImageButton) findViewById(R.id.btn_shutter);
+        button = (Button) findViewById(R.id.btn_edt);
+        shutterBtn.setOnClickListener(new BtnListeners());
+
     }
 
     private void initViewParams() {
         LayoutParams params = surfaceView.getLayoutParams();
-        Point p = DisplayUtil.getScreenMetrics(this);
+        p = DisplayUtil.getScreenMetrics(this);
+        Log.e("screen info", "screenWidth:" + p.x + ",screenHeigh:" + p.y);
         params.width = p.x;
         params.height = p.y;
         previewRate = DisplayUtil.getScreenRate(this); //默认全屏的比例预览
@@ -92,6 +100,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         // TODO Auto-generated method stub
         SurfaceHolder holder = surfaceView.getSurfaceHolder();
         CameraInterface.getInstance().doStartPreview(holder, previewRate);
+
+
     }
 
     private class BtnListeners implements OnClickListener {
@@ -107,7 +117,5 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                     break;
             }
         }
-
     }
-
 }

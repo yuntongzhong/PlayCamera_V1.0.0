@@ -29,6 +29,7 @@ public class CameraInterface implements Camera.PreviewCallback{
 	private boolean isPreviewing = false;
 	private float mPreviwRate = -1f;
 	private static CameraInterface mCameraInterface;
+	private CropInfo mCropInfo;
 
 
 
@@ -48,11 +49,16 @@ public class CameraInterface implements Camera.PreviewCallback{
 	/**打开Camera
 	 * @param callback
 	 */
-	public void doOpenCamera(CamOpenOverCallback callback){
+	public void doOpenCamera(CropInfo cropInfo,CamOpenOverCallback callback){
+		doStopCamera();
+		mCropInfo=cropInfo;
 		Log.i(TAG, "Camera open....");
 		mCamera = Camera.open();
 		Log.i(TAG, "Camera open over....");
-		callback.cameraHasOpened();
+		if(null!=callback){
+			callback.cameraHasOpened();
+		}
+
 	}
 	/**开启预览
 	 * @param holder
@@ -74,6 +80,7 @@ public class CameraInterface implements Camera.PreviewCallback{
 			Size pictureSize = CamParaUtil.getInstance().getPropPictureSize(
 					mParams.getSupportedPictureSizes(),previewRate, 800);
 			mParams.setPictureSize(pictureSize.width, pictureSize.height);
+
 			Size previewSize = CamParaUtil.getInstance().getPropPreviewSize(
 					mParams.getSupportedPreviewSizes(), previewRate, 800);
 			mParams.setPreviewSize(previewSize.width, previewSize.height);
@@ -186,7 +193,7 @@ public class CameraInterface implements Camera.PreviewCallback{
 			}
 		}
 		mFaceTask = new FaceTask(bytes,mCamera.getParameters().getPreviewSize());
-		mFaceTask.execute((Void)null);
+		mFaceTask.execute();
 
 	}
 
@@ -215,9 +222,13 @@ public class CameraInterface implements Camera.PreviewCallback{
 			}
 			byte[] tmp = os.toByteArray();
 			Bitmap bmp = BitmapFactory.decodeByteArray(tmp, 0,tmp.length);
-			if(null!=bmp){
+			if(null!=bmp&&null!=mCropInfo){
 				Bitmap rotaBitmap = ImageUtil.getRotateBitmap(bmp, 90.0f);
-				FileUtil.savePreviewBitmap(rotaBitmap);
+
+				Log.e("rotaBitmap","width:"+rotaBitmap.getWidth()+",height:"+rotaBitmap.getHeight());
+				Bitmap endBitmap=Bitmap.createBitmap(rotaBitmap,(int)(mCropInfo.x/2.3f)-5,(int)(mCropInfo.y/2.3f)-5,(int)(mCropInfo.width/2.3f)+10,(int)(mCropInfo.height/2.3f)+10);
+
+				FileUtil.savePreviewBitmap(endBitmap);
 			}
 			//doSomethingNeeded(bmp);   //自己定义的实时分析预览帧视频的算法
 			Log.e("bitmap Width",""+bmp.getWidth());

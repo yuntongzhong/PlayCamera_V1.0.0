@@ -13,6 +13,23 @@
             android:layout_height="0dip" />
     </FrameLayout>
 
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btn_edt"
+        android:textColor="@color/EdtColor"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:text="将号码置于下方蓝色框内"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_edt"
+        android:layout_width="300dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/btn_normal_shape"
+        android:layout_height="40dp" />
+
+
     <ImageButton
         android:id="@+id/btn_shutter"
         android:layout_width="wrap_content"

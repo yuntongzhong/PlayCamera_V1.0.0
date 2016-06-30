@@ -41,7 +41,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "surfaceDestroyed...");
-		CameraInterface.getInstance().doStopCamera();
+//		CameraInterface.getInstance().doStopCamera();
 	}
 	public SurfaceHolder getSurfaceHolder(){
 		return mSurfaceHolder;

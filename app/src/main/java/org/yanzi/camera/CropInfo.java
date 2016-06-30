@@ -1,7 +1,7 @@
 package org.yanzi.camera;
 
 /**
- * Created by Administrator on 2016/6/29.
+ * 裁剪区域及屏幕，用于计算实际裁剪区域。
  * Created by zyt on 2016/6/29.
  */
 public class CropInfo {
@@ -10,7 +10,8 @@ public class CropInfo {
     float width;
     float height;
     float screenWidth;
-    float screenHeigh;
+    float screenHeight;
+
 
     public CropInfo(int x, int y, int width, int height, int screenWidth, int screenHeigh) {
         this.x = x;
@@ -18,7 +19,7 @@ public class CropInfo {
         this.width = width;
         this.height = height;
         this.screenWidth = screenWidth;
-        this.screenHeigh = screenHeigh;
+        this.screenHeight = screenHeigh;
     }
 
     public float getX() {
@@ -61,11 +62,11 @@ public class CropInfo {
         this.screenWidth = screenWidth;
     }
 
-    public float getScreenHeigh() {
-        return screenHeigh;
+    public float getScreenHeight() {
+        return screenHeight;
     }
 
-    public void setScreenHeigh(float screenHeigh) {
-        this.screenHeigh = screenHeigh;
+    public void setScreenHeight(float screenHeight) {
+        this.screenHeight = screenHeight;
     }
 }

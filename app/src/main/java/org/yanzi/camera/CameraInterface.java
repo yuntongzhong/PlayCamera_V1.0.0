@@ -7,6 +7,7 @@ import java.util.List;
 import org.yanzi.util.CamParaUtil;
 import org.yanzi.util.FileUtil;
 import org.yanzi.util.ImageUtil;
+import org.yanzi.util.RecognitionUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,11 +31,15 @@ public class CameraInterface implements Camera.PreviewCallback{
 	private float mPreviwRate = -1f;
 	private static CameraInterface mCameraInterface;
 	private CropInfo mCropInfo;
+	private ResultCallback resultCallback;
 
 
 
 	public interface CamOpenOverCallback{
 		public void cameraHasOpened();
+	}
+	public interface ResultCallback{
+		public void call(String result);
 	}
 
 	private CameraInterface(){
@@ -46,6 +51,13 @@ public class CameraInterface implements Camera.PreviewCallback{
 		}
 		return mCameraInterface;
 	}
+	public void setResultCallBack(ResultCallback callBack){
+		if(callBack!=null){
+			resultCallback=callBack;
+		}
+
+	}
+
 	/**打开Camera
 	 * @param callback
 	 */
@@ -71,7 +83,6 @@ public class CameraInterface implements Camera.PreviewCallback{
 			return;
 		}
 		if(mCamera != null){
-
 			mParams = mCamera.getParameters();
 			mParams.setPictureFormat(PixelFormat.JPEG);//设置拍照后存储的图片格式
 			CamParaUtil.getInstance().printSupportPictureSize(mParams);
@@ -226,14 +237,20 @@ public class CameraInterface implements Camera.PreviewCallback{
 				Bitmap rotaBitmap = ImageUtil.getRotateBitmap(bmp, 90.0f);
 
 				Log.e("rotaBitmap","width:"+rotaBitmap.getWidth()+",height:"+rotaBitmap.getHeight());
-				Bitmap endBitmap=Bitmap.createBitmap(rotaBitmap,(int)(mCropInfo.x/2.3f)-5,(int)(mCropInfo.y/2.3f)-5,(int)(mCropInfo.width/2.3f)+10,(int)(mCropInfo.height/2.3f)+10);
+				RealityInfo realityInfo=new RealityInfo(mCropInfo,rotaBitmap.getWidth(),rotaBitmap.getHeight());
+				Bitmap endBitmap=Bitmap.createBitmap(rotaBitmap,realityInfo.realityX,realityInfo.realityY,realityInfo.realityWidth,realityInfo.realityHeigh);
 
-				FileUtil.savePreviewBitmap(endBitmap);
+				//FileUtil.savePreviewBitmap(endBitmap);
+
+				String result =RecognitionUtils.getInstance().startDecodeThread(endBitmap);
+				Log.e("result",result);
+				if(!"-1".equals(result)&&resultCallback!=null){
+					resultCallback.call(result);
+				}
 			}
-			//doSomethingNeeded(bmp);   //自己定义的实时分析预览帧视频的算法
 			Log.e("bitmap Width",""+bmp.getWidth());
 			return null;
 		}
-
 	}
+
 }

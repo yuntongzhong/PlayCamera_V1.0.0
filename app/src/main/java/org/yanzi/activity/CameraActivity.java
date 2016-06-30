@@ -8,6 +8,7 @@ import org.yanzi.playcamera.R;
 import org.yanzi.util.DisplayUtil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -32,6 +33,12 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        CameraInterface.getInstance().setResultCallBack(new CameraInterface.ResultCallback() {
+            @Override
+            public void call(String result) {
+                recognitionSuccees(result);
+            }
+        });
     }
 
 
@@ -44,15 +51,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         shutterBtn.post(openCamera);
         super.onResume();
     }
-
-    @Override
-    protected void onPause() {
-        Log.e("tag", "onPause");
-      //  CameraInterface.getInstance().doStopCamera();
-        super.onPause();
-    }
-
-
     Runnable openCamera = new Runnable() {
         @Override
         public void run() {
@@ -100,10 +98,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         // TODO Auto-generated method stub
         SurfaceHolder holder = surfaceView.getSurfaceHolder();
         CameraInterface.getInstance().doStartPreview(holder, previewRate);
-
-
     }
-
     private class BtnListeners implements OnClickListener {
 
         @Override
@@ -117,5 +112,13 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                     break;
             }
         }
+    }
+
+    void recognitionSuccees(String result){
+        Intent intent = new Intent();
+        intent.putExtra("info",result);
+        setResult(RESULT_OK, intent);
+
+        CameraActivity.this.finish();
     }
 }

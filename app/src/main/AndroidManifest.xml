@@ -19,9 +19,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="org.yanzi.activity.CameraActivity"
+            android:name="org.yanzi.activity.MainActivity"
             android:label="@string/app_name" 
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.yanzi.activity.CameraActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
     </application>
 
 </manifest>

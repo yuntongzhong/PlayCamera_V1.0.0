@@ -24,7 +24,7 @@ public class RecognitionUtils {
     }
 
     public RecognitionUtils() {
-       // initTianRui();
+        initTianRui();
     }
 
     public void initTianRui() {
@@ -36,7 +36,7 @@ public class RecognitionUtils {
     }
 
     public String startDecodeThread(Bitmap mBmppp) {
-        initTianRui();
+     //   initTianRui();
         final long t1 = System.currentTimeMillis();
         int picw = mBmppp.getWidth();
         int pich = mBmppp.getHeight();

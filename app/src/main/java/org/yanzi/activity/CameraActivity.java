@@ -45,7 +45,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     @Override
     protected void onResume() {
         Log.e("tag", "onResume");
-
         initUI();
         initViewParams();
         shutterBtn.post(openCamera);

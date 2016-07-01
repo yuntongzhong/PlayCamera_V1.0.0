@@ -35,8 +35,8 @@ public class RecognitionUtils {
         }
     }
 
+    //这个方法比较耗时，需要新开线程使用。
     public String startDecodeThread(Bitmap mBmppp) {
-        //   initTianRui();
         final long t1 = System.currentTimeMillis();
         int picw = mBmppp.getWidth();
         int pich = mBmppp.getHeight();
@@ -48,10 +48,12 @@ public class RecognitionUtils {
         if (rlt != 1) {
             return "-1";
         } else {
+            //识别所花时间
             long t2 = System.currentTimeMillis() - t1;
             String builder = new String();
             String[] mwholeTextLine = Native.getWholeTextLineResult();
             for (int i = 0; i < mwholeTextLine.length; i++) {
+                //拼接字符串并去空格
                 builder += mwholeTextLine[i].replace(" ", "") + "\r\n";
             }
 //            return Long.toString(t2) + "mS:\n" + getNum(builder);11111111111111111X
@@ -65,7 +67,7 @@ public class RecognitionUtils {
         String regex = "\\d*";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(str);
-        Identity identity=new Identity();
+        Identity identity = new Identity();
 
         while (m.find()) {
             String tempStr = m.group();
@@ -74,11 +76,11 @@ public class RecognitionUtils {
                     result += "手机号:" + tempStr + "\n";
                     System.out.println("手机号:" + tempStr);
                 }
-                if (tempStr.length() == 17&&identity.checkIDCard(tempStr+"X")) {
+                if (tempStr.length() == 17 && identity.checkIDCard(tempStr + "X")) {
                     result += "身份证号码:" + tempStr + "X" + "\n";
                     System.out.println("身份证号码:" + tempStr);
                 }
-                if (tempStr.length() == 18&&identity.checkIDCard(tempStr)) {
+                if (tempStr.length() == 18 && identity.checkIDCard(tempStr)) {
                     result += "身份证号码:" + tempStr + "\n";
                     System.out.println("身份证号码:" + tempStr);
                 }

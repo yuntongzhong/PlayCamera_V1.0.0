@@ -36,7 +36,7 @@ public class RecognitionUtils {
     }
 
     public String startDecodeThread(Bitmap mBmppp) {
-     //   initTianRui();
+        //   initTianRui();
         final long t1 = System.currentTimeMillis();
         int picw = mBmppp.getWidth();
         int pich = mBmppp.getHeight();
@@ -61,42 +61,42 @@ public class RecognitionUtils {
 
     //取数字
     String getNum(String str) {
-        String result="";
+        String result = "";
         String regex = "\\d*";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(str);
+        Identity identity=new Identity();
 
         while (m.find()) {
             String tempStr = m.group();
             if (!"".equals(tempStr)) {
-                if (tempStr.length() == 11&&isMobileNO(tempStr)) {
-                    result+="手机号:" +tempStr+"\n";
+                if (tempStr.length() == 11 && isMobileNO(tempStr)) {
+                    result += "手机号:" + tempStr + "\n";
                     System.out.println("手机号:" + tempStr);
                 }
-                if (tempStr.length() == 17) {
-                    result+="身份证号码:" +tempStr+"X"+"\n";
+                if (tempStr.length() == 17&&identity.checkIDCard(tempStr+"X")) {
+                    result += "身份证号码:" + tempStr + "X" + "\n";
                     System.out.println("身份证号码:" + tempStr);
                 }
-                if (tempStr.length() == 18) {
-                    result+="身份证号码:" +tempStr+"\n";
+                if (tempStr.length() == 18&&identity.checkIDCard(tempStr)) {
+                    result += "身份证号码:" + tempStr + "\n";
                     System.out.println("身份证号码:" + tempStr);
                 }
             }
         }
-        if(result.length()<1){
+        if (result.length() < 1) {
             return "-1";
-        }else {
+        } else {
             return result;
         }
     }
 
-    public boolean isMobileNO(String mobiles){
+    //判断是否手机号
+    public boolean isMobileNO(String mobiles) {
 
         Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-
         Matcher m = p.matcher(mobiles);
-
-        System.out.println(m.matches()+"---");
+        System.out.println(m.matches() + "---");
 
         return m.matches();
 

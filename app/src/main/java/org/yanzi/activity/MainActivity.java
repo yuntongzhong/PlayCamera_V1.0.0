@@ -59,7 +59,6 @@ public class MainActivity extends Activity {
         }
         String info=data.getStringExtra("info");
         if(info!=null){
-            Log.e("info",info);
             tvResult.setText(info);
         }
 

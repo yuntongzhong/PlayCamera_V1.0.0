@@ -22,8 +22,8 @@ public class RealityInfo {
         //按比例计算裁剪位置，并略微扩大一点范围。
         this.realityX = (int) (cropInfo.x / scaleWidthSize)-4;
         this.realityY = (int) (cropInfo.y / scaleHeightSize)-4;
-        this.realityWidth = (int) (cropInfo.width / scaleWidthSize) + 4;
-        this.realityHeigh = (int) (cropInfo.height / scaleHeightSize) + 4;
+        this.realityWidth = (int) (cropInfo.width / scaleWidthSize) + 8;
+        this.realityHeigh = (int) (cropInfo.height / scaleHeightSize) + 8;
 
         if (realityX < 0) {
             realityX = 0;
@@ -44,6 +44,6 @@ public class RealityInfo {
             }
             realityHeigh -= 1;
         }
-        Log.e("RealityInfo", "x:" + realityX + ",y:" + realityY + ",realityWidth:" + realityWidth + ",realityHeigh:" + realityHeigh);
+        Log.i("RealityInfo", "x:" + realityX + ",y:" + realityY + ",realityWidth:" + realityWidth + ",realityHeigh:" + realityHeigh);
     }
 }

@@ -239,19 +239,17 @@ public class CameraInterface implements Camera.PreviewCallback {
             if (null != bmp && null != mCropInfo) {
                 Bitmap rotaBitmap = ImageUtil.getRotateBitmap(bmp, 90.0f);
 
-                Log.e("rotaBitmap", "width:" + rotaBitmap.getWidth() + ",height:" + rotaBitmap.getHeight());
+                Log.i("rotaBitmap", "width:" + rotaBitmap.getWidth() + ",height:" + rotaBitmap.getHeight());
                 RealityInfo realityInfo = new RealityInfo(mCropInfo, rotaBitmap.getWidth(), rotaBitmap.getHeight());
                 Bitmap endBitmap = Bitmap.createBitmap(rotaBitmap, realityInfo.realityX, realityInfo.realityY, realityInfo.realityWidth, realityInfo.realityHeigh);
 
                 //FileUtil.savePreviewBitmap(endBitmap);
 
                 String result = RecognitionUtils.getInstance().startDecodeThread(endBitmap);
-                Log.e("result", result);
                 if (!"-1".equals(result) && resultCallback != null) {
                     resultCallback.call(result);
                 }
             }
-            Log.e("bitmap Width", "" + bmp.getWidth());
             return null;
         }
     }

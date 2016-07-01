@@ -77,7 +77,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     private void initViewParams() {
         LayoutParams params = surfaceView.getLayoutParams();
         p = DisplayUtil.getScreenMetrics(this);
-        Log.e("screen info", "screenWidth:" + p.x + ",screenHeigh:" + p.y);
+        Log.i("screen info", "screenWidth:" + p.x + ",screenHeigh:" + p.y);
         params.width = p.x;
         params.height = p.y;
         previewRate = DisplayUtil.getScreenRate(this); //默认全屏的比例预览
